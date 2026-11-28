@@ -39,13 +39,8 @@ macro_rules! kani_valid_value {
         /// forget the untyped writes made before it.
         #[kanitool::fn_marker = "InitializeUntypedWriteStateModel"]
         fn initialize_untyped_write_state() {
-            unsafe {
-                if !UNTYPED_WRITE_STATE.initialized {
-                    UNTYPED_WRITE_STATE.initialized = true;
-                    UNTYPED_WRITE_STATE.tracked_object_id = super::any();
-                    UNTYPED_WRITE_STATE.tracked_offset = super::any();
-                    UNTYPED_WRITE_STATE.untyped = false;
-                }
+            if unsafe { !UNTYPED_WRITE_STATE.initialized } {
+                write_untyped_write_state(super::any(), super::any());
             }
         }
 
@@ -67,7 +62,7 @@ macro_rules! kani_valid_value {
                     && UNTYPED_WRITE_STATE.tracked_offset >= offset
                     && UNTYPED_WRITE_STATE.tracked_offset - offset < count.saturating_mul(elem_size)
                 {
-                    UNTYPED_WRITE_STATE.untyped = untyped;
+                    write_untyped_flag(untyped);
                 }
             }
         }
@@ -85,6 +80,33 @@ macro_rules! kani_valid_value {
                     && UNTYPED_WRITE_STATE.tracked_object_id == obj
                     && UNTYPED_WRITE_STATE.tracked_offset >= offset
                     && UNTYPED_WRITE_STATE.tracked_offset - offset < size
+            }
+        }
+
+        /// Set the tracked byte.
+        #[inline(never)]
+        #[kanitool::disable_checks(pointer)]
+        #[kanitool::fn_marker = "WriteUntypedWriteStateModel"]
+        // This state is internal, so a `__VERIFIER_` name keeps it out of write-set checks.
+        #[unsafe(export_name = "__VERIFIER_kani_valid_value_write_state")]
+        fn write_untyped_write_state(tracked_object_id: usize, tracked_offset: usize) {
+            unsafe {
+                UNTYPED_WRITE_STATE.initialized = true;
+                UNTYPED_WRITE_STATE.tracked_object_id = tracked_object_id;
+                UNTYPED_WRITE_STATE.tracked_offset = tracked_offset;
+                UNTYPED_WRITE_STATE.untyped = false;
+            }
+        }
+
+        /// Set the `untyped` flag.
+        #[inline(never)]
+        #[kanitool::disable_checks(pointer)]
+        #[kanitool::fn_marker = "WriteUntypedWriteFlagModel"]
+        // This state is internal, so a `__VERIFIER_` name keeps it out of write-set checks.
+        #[unsafe(export_name = "__VERIFIER_kani_valid_value_write_untyped")]
+        fn write_untyped_flag(untyped: bool) {
+            unsafe {
+                UNTYPED_WRITE_STATE.untyped = untyped;
             }
         }
     };

@@ -1,0 +1,12 @@
+Checking harness check_invalid_byte_in_loop...
+Failed Checks: Undefined Behavior: Invalid value of type `Flag`
+VERIFICATION:- FAILED
+
+Checking harness check_stores_in_loop...
+VERIFICATION:- SUCCESSFUL
+
+Checking harness check_copy_in_loop...
+VERIFICATION:- SUCCESSFUL
+
+Verification failed for - check_invalid_byte_in_loop
+Complete - 2 successfully verified harnesses, 1 failures, 3 total.
