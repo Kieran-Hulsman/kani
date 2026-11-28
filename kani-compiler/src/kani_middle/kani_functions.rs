@@ -211,6 +211,10 @@ pub enum KaniModel {
     WriteAnySlim,
     #[strum(serialize = "WriteAnyStrModel")]
     WriteAnyStr,
+    #[strum(serialize = "WriteUntypedWriteFlagModel")]
+    WriteUntypedWriteFlag,
+    #[strum(serialize = "WriteUntypedWriteStateModel")]
+    WriteUntypedWriteState,
 }
 
 /// Kani hooks are Rust functions defined in the Kani library that exposes some semantics

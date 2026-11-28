@@ -98,6 +98,8 @@ const SKIPPED_ITEMS: &[KaniFunction] = &[
     KaniFunction::Model(KaniModel::InitializeUntypedWriteState),
     KaniFunction::Model(KaniModel::IsUntypedWrite),
     KaniFunction::Model(KaniModel::SetUntypedWrite),
+    KaniFunction::Model(KaniModel::WriteUntypedWriteFlag),
+    KaniFunction::Model(KaniModel::WriteUntypedWriteState),
 ];
 
 /// Instruments the code with checks for uninitialized memory, agnostic to the source of targets.

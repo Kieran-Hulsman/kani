@@ -30,7 +30,9 @@ These checks are on by default but can be individually disabled with `--no-XXX-c
   invalid for a type (with `write_bytes`, a copy, or through a pointer to a type
   without validity requirements) is not reported by itself; reading them as that
   type is. Like `-Z uninit-checks`, this tracks one byte chosen
-  nondeterministically per harness. This is an unstable feature that may change.
+  nondeterministically per harness. Inside a contracted loop, an invalid value
+  written untyped in one iteration and read in a later one can be missed. This
+  is an unstable feature that may change.
 - **Uninitialized memory** (`-Z uninit-checks`): Checks that memory is
   initialized before being read through pointers. This is an unstable feature
   that may change.
